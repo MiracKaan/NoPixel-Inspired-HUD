@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="vehicle-hud" id="vehicle-hud" style="display: none;">
+        <div class="speedometer">
+            
+            <svg class="gauges" viewBox="0 0 200 200" style="overflow: visible;">
+                <defs>
+                    <mask id="rpm-mask">
+                        <!-- Extended mask for RPM (Left to Bottom-Right) -->
+                        <path fill="none" stroke="white" stroke-width="12" stroke-dasharray="8 5" 
+                              d="M 26.4,142.5 A 85,85 0 1,1 160.1,160.1" />
+                    </mask>
+                </defs>
+                
+                <!-- RPM Arc (Yarım Halka - Uzatılmış) -->
+                <path class="rpm-bg" d="M 26.4,142.5 A 85,85 0 1,1 160.1,160.1" />
+                <path class="rpm-fg" mask="url(#rpm-mask)" id="rpm-path" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" 
+                      d="M 26.4,142.5 A 85,85 0 1,1 160.1,160.1" />
+
+                <!-- FUEL Arc (Right side, outer) -->
+                <!-- Drawn from angle 38 (slightly up from bottom-right) to angle -32 -->
+                <!-- Radius is 99 to push it a tiny bit further right -->
+                <path class="fuel-bg" d="M 178.0,160.9 A 99,99 0 0,0 184.0,47.5" />
+                <path class="fuel-fg" id="fuel-path" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" 
+                      d="M 178.0,160.9 A 99,99 0 0,0 184.0,47.5" />
+            </svg>
+            
+            <div class="speed-center">
+                <div class="gear-circle">
+                    <span id="veh-gear">D</span>
+                </div>
+                <span class="gear-label">GEAR</span>
+                <div class="speed-value-container">
+                    <div class="speed-value" id="veh-speed">011</div>
+                </div>
+                <div class="speed-unit">KMH</div>
+            </div>
+            
+            <div class="fuel-icon-overlay" id="icon-fuel">
+                <i class="fa-solid fa-gas-pump"></i>
+            </div>
+
+            <!-- Right side stacked icons -->
+            <div class="veh-icons">
+                <div class="v-icon" id="icon-lights"><i class="fa-regular fa-lightbulb"></i></div>
+                <div class="v-icon" id="icon-seatbelt"><i class="fa-solid fa-user-slash"></i></div>
+                <div class="v-icon" id="icon-lock"><i class="fa-solid fa-unlock"></i></div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

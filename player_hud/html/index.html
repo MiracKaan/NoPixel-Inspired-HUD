@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="hud-container" style="display:none;" id="hud">
+        
+        <div class="mic-container" id="mic-bg">
+            <i class="fa-solid fa-microphone" id="mic-icon"></i>
+        </div>
+
+        <div class="stats-container">
+            <div class="bars-row">
+                <!-- Health Column -->
+                <div class="bar-column">
+                    <div class="bar-wrapper health-wrapper">
+                        <div class="bar-bg">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                            <span>HEALTH</span>
+                        </div>
+                        <div class="bar-fill-track">
+                            <div class="bar-fill" id="health-fill"></div>
+                        </div>
+                    </div>
+                    <div class="small-icon">
+                        <i class="fa-solid fa-burger" id="hunger-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Armor Column -->
+                <div class="bar-column">
+                    <div class="bar-wrapper armor-wrapper">
+                        <div class="bar-bg armor-bg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>ARMOR</span>
+                        </div>
+                        <div class="bar-fill-track">
+                            <div class="bar-fill" id="armor-fill"></div>
+                        </div>
+                    </div>
+                    <div class="small-icon">
+                        <i class="fa-solid fa-droplet" id="thirst-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAMINA & OXYGEN (Orta Alt) -->
+    <div class="center-container">
+        <div class="center-bar-wrapper" id="stamina-container" style="display:none;">
+            <i class="fa-solid fa-person-running center-icon" id="stamina-icon"></i>
+            <div class="center-track"><div class="center-fill" id="stamina-fill"></div></div>
+        </div>
+        <div class="center-bar-wrapper" id="oxygen-container" style="display:none;">
+            <i class="fa-solid fa-person-swimming center-icon" id="oxygen-icon"></i>
+            <div class="center-track"><div class="center-fill" id="oxygen-fill"></div></div>
+        </div>
+    </div>
+    
+    <!-- WEAPON AMMO HUD -->
+    <div class="weapon-hud" id="weapon-container" style="display: none;">
+        <i class="fa-solid fa-gun weapon-icon"></i>
+        <div class="ammo-clip" id="ammo-clip">0</div>
+        <div class="ammo-sep">|</div>
+        <div class="ammo-total" id="ammo-total">0</div>
+    </div>
+    
+    <!-- Custom Crosshair -->
+    <div class="custom-crosshair" id="crosshair" style="display: none;">
+        <div class="crosshair-dot"></div>
+        <!-- Istersen buraya 4 cizgi vb. ekleyebilirsin, dot gayet şık durur -->
+    </div>
+
+    <!-- Cinematic Bars -->
+    <div class="cinematic-bar top-bar" id="cinematic-top"></div>
+    <div class="cinematic-bar bottom-bar" id="cinematic-bottom"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
