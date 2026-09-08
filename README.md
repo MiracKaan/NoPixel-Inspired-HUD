@@ -3,6 +3,8 @@
   <p>A modern, sleek, fully optimized, and modular User Interface (HUD) for FiveM.</p>
 </div>
 
+<img width="1913" height="1050" alt="image" src="https://github.com/user-attachments/assets/3224ac86-2a39-41ef-9d35-03fa889b30f8" />
+
 ---
 
 ## 📌 Features
@@ -21,8 +23,5 @@ NoPixel-Inspired HUD is designed with performance in mind and is completely modu
    ensure player_hud
    ensure car_hud
    ```
-4. Restart your server or type `ensure [script-name]` in your server console.
-
-> [!NOTE]
-> The `player_hud` and `car_hud` logic relies on standard StateBags (e.g., `LocalPlayer.state.seatbelt`) and natively integrates flawlessly with `QBCore` and `Qbox` frameworks.
+4. Restart your server or type `ensure [hud]` in your server console.
 
