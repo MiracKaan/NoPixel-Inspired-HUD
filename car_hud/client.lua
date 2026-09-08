@@ -62,6 +62,9 @@ CreateThread(function()
             local lockStatus = GetVehicleDoorLockStatus(veh)
             local isLocked = lockStatus == 2 or lockStatus == 3
             
+            -- Engine Health
+            local engineHealth = GetVehicleEngineHealth(veh)
+            
             SendNUIMessage({
                 action = "updateCarHud",
                 speed = speed,
@@ -70,7 +73,8 @@ CreateThread(function()
                 fuel = fuel,
                 lights = isLightsOn,
                 seatbelt = seatbelt,
-                locked = isLocked
+                locked = isLocked,
+                engine = engineHealth
             })
         else
             if wasInVehicle then

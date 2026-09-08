@@ -1,3 +1,6 @@
+let lastEngineHealth = 1000;
+let engineShowTimer = null;
+
 window.addEventListener("message", function(e) {
     if (e.data.action === "updateCarHud") {
         document.getElementById("vehicle-hud").style.display = "flex";
@@ -67,7 +70,41 @@ window.addEventListener("message", function(e) {
             lockIcon.innerHTML = '<i class="fa-solid fa-unlock"></i>';
         }
         
+        // Engine Health Logic
+        let isDamagedNow = false;
+        if (d.engine < lastEngineHealth && d.engine < 995) {
+            isDamagedNow = true;
+        }
+        lastEngineHealth = d.engine;
+        
+        if (d.engine < 995) {
+            let enginePct = Math.max(0, Math.min(100, (d.engine / 1000) * 100));
+            document.getElementById("engine-fill").style.width = enginePct + "%";
+            document.getElementById("engine-icon").style.color = enginePct <= 10 ? "#e74c3c" : "white";
+            
+            if (enginePct <= 10) {
+                // %10'un altındaysa kalıcı olarak göster
+                document.getElementById("engine-container").style.display = "flex";
+                if (engineShowTimer) clearTimeout(engineShowTimer);
+            } else if (isDamagedNow) {
+                // Hasar aldığında 3 saniye göster
+                document.getElementById("engine-container").style.display = "flex";
+                if (engineShowTimer) clearTimeout(engineShowTimer);
+                
+                engineShowTimer = setTimeout(() => {
+                    if (lastEngineHealth > 100) { // 100 (%10)
+                        document.getElementById("engine-container").style.display = "none";
+                    }
+                }, 3000);
+            }
+        } else {
+            document.getElementById("engine-container").style.display = "none";
+            if (engineShowTimer) clearTimeout(engineShowTimer);
+        }
+        
     } else if (e.data.action === "hideCarHud") {
         document.getElementById("vehicle-hud").style.display = "none";
+        document.getElementById("engine-container").style.display = "none";
+        lastEngineHealth = 1000; // Araçtan inince sağlığı sıfırla ki tekrar binince hasarlıysa anlık gözüksün
     }
 });

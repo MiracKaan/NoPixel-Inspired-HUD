@@ -2,22 +2,41 @@ CreateThread(function()
     Wait(1500)
     
     RequestStreamedTextureDict("circlemap", false)
-    if not HasStreamedTextureDictLoaded("circlemap") then
-        Wait(150)
+    while not HasStreamedTextureDictLoaded("circlemap") do
+        Wait(10)
     end
     
     AddReplaceTexture("platform:/textures/graphics", "radarmasksm", "circlemap", "radarmasksm")
     SetMinimapClipType(1) 
     
-    -- 1920x1080 Exact Math (14.5vw Box)
-    local x = 0.823     -- (100vw - 4vw right - 14.5vw width) = 81.5vw
-    local y = 0.100       -- 4vh top
-    local width = 0.120   -- 14.5vw width
-    local height = 0.1600 -- 14.5vw in pixels (278.4px) / 1080px = 0.2577
+    local function UpdateMinimapCoords()
+        local resX, resY = GetActiveScreenResolution()
+        if resX == 0 or resY == 0 then return end
+        
+        local aspectRatio = resX / resY
+        local safeZone = GetSafeZoneSize()
+        local safeZoneOffsetX = resX * ((1.0 - safeZone) / 2.0)
+        local safeZoneOffsetY = resY * ((1.0 - safeZone) / 2.0)
+        
+        -- Orijinal mükemmel değerlerin (1920x1080)
+        local targetX = 0.837
+        local targetY = 0.110
+        local targetWidth = 0.120
+        -- Haritanın yuvarlak olması için AspectRatio ile büküyoruz
+        local targetHeight = 0.75 * targetWidth * aspectRatio
+        
+        -- SafeZone'u GTA için tersine çevirme (Çünkü GTA L,T'de otomatik SafeZone uygular)
+        local gtaX = ((targetX * resX) - safeZoneOffsetX) / (resX * safeZone)
+        local gtaY = ((targetY * resY) - safeZoneOffsetY) / (resY * safeZone)
+        local gtaWidth = targetWidth / safeZone
+        local gtaHeight = targetHeight / safeZone
+        
+        SetMinimapComponentPosition("minimap", "L", "T", gtaX, gtaY, gtaWidth, gtaHeight)
+        SetMinimapComponentPosition("minimap_mask", "L", "T", gtaX + (0.01/safeZone), gtaY + (0.02/safeZone), gtaWidth - (0.02/safeZone), gtaHeight - (0.04/safeZone))
+        SetMinimapComponentPosition("minimap_blur", "L", "T", gtaX - (0.01/safeZone), gtaY - (0.01/safeZone), gtaWidth + (0.02/safeZone), gtaHeight + (0.02/safeZone))
+    end
     
-    SetMinimapComponentPosition("minimap", "L", "T", x, y, width, height)
-    SetMinimapComponentPosition("minimap_mask", "L", "T", x + 0.01, y + 0.02, width - 0.02, height - 0.04)
-    SetMinimapComponentPosition("minimap_blur", "L", "T", x - 0.01, y - 0.01, width + 0.02, height + 0.02)
+    UpdateMinimapCoords()
     
     local minimap = RequestScaleformMovie("minimap")
     while not HasScaleformMovieLoaded(minimap) do
@@ -30,6 +49,39 @@ CreateThread(function()
     
     SetBlipAlpha(GetNorthRadarBlip(), 0)
     DisplayRadar(true)
+
+    CreateThread(function()
+        local lastResX, lastResY, lastSafeZone = 0, 0, 0
+        local warningActive = false
+        
+        while true do
+            Wait(1000)
+            local rx, ry = GetActiveScreenResolution()
+            local sz = GetSafeZoneSize()
+            
+            -- Uyarı Ekranı Mantığı
+            if sz < 0.99 then
+                if not warningActive then
+                    warningActive = true
+                    SendNUIMessage({ action = "showSafezoneWarning" })
+                end
+            else
+                if warningActive then
+                    warningActive = false
+                    SendNUIMessage({ action = "hideSafezoneWarning" })
+                end
+            end
+            
+            if rx ~= lastResX or ry ~= lastResY or sz ~= lastSafeZone then
+                lastResX, lastResY, lastSafeZone = rx, ry, sz
+                UpdateMinimapCoords()
+                
+                SetRadarBigmapEnabled(true, false)
+                Wait(50)
+                SetRadarBigmapEnabled(false, false)
+            end
+        end
+    end)
 end)
 
 local cinematicMode = false

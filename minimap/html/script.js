@@ -15,5 +15,9 @@ window.addEventListener("message", function(event) {
         });
     } else if (event.data.action === "hideCompass") {
         document.getElementById("compass-container").style.display = "none";
+    } else if (event.data.action === "showSafezoneWarning") {
+        document.getElementById("safezone-warning").style.display = "flex";
+    } else if (event.data.action === "hideSafezoneWarning") {
+        document.getElementById("safezone-warning").style.display = "none";
     }
 });
