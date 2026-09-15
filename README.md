@@ -3,7 +3,8 @@
   <p>A modern, sleek, fully optimized, and modular User Interface (HUD) for FiveM.</p>
 </div>
 
-<img width="1913" height="1050" alt="image" src="https://github.com/user-attachments/assets/3224ac86-2a39-41ef-9d35-03fa889b30f8" />
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/ba85a6a8-8cb2-4054-8ea2-fd9dcb373abb" />
+
 
 ---
 
