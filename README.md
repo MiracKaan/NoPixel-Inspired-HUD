@@ -9,8 +9,15 @@
 
 ## 📌 Features
 
-NoPixel-Inspired HUD is designed with performance in mind and is completely modular, divided into three standalone standalone scripts (`player_hud`, `car_hud`, `minimap`).
+NoPixel-Inspired HUD is designed with performance in mind and is completely modular, divided into three standalone standalone scripts (`player_hud`, `car_hud`, `minimap`, `pulse_hud`).
 
+```commands
+/cinematic
+/togglemap
+/broken (test commands)
+/blending (test commands)
+/developermode
+```
 ---
 
 ## 🛠️ Installation
@@ -22,6 +29,8 @@ NoPixel-Inspired HUD is designed with performance in mind and is completely modu
    ensure minimap
    ensure player_hud
    ensure car_hud
+   ensure pulse_hud
    ```
 4. Restart your server or type `ensure [hud]` in your server console.
 
+It now works compatibly with qbx_medical.
