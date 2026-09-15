@@ -29,7 +29,7 @@ NoPixel-Inspired HUD is designed with performance in mind and is completely modu
    ensure minimap
    ensure player_hud
    ensure car_hud
-   ensure pulse_hud
+   ensure pulse_hud (Installation is not mandatory.)
    ```
 4. Restart your server or type `ensure [hud]` in your server console.
 
