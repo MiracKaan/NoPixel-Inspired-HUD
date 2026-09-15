@@ -6,16 +6,36 @@ window.addEventListener("message", function(e) {
         document.getElementById("vehicle-hud").style.display = "flex";
         let d = e.data;
         
-        // RPM SVG Logic
+        // Electric vs Gas Logic
+        let fuelTypeIcon = document.getElementById("fuel-type-icon");
         let rpmPath = document.getElementById("rpm-path");
+        
+        if (d.isElectric) {
+            rpmPath.style.stroke = "url(#elec-grad)";
+            fuelTypeIcon.className = "fa-solid fa-plug";
+        } else {
+            rpmPath.style.stroke = "url(#gas-grad)";
+            fuelTypeIcon.className = "fa-solid fa-gas-pump";
+        }
+        
+        // RPM SVG Logic
         let offsetRpm = 100 - (d.rpm * 100);
         rpmPath.style.strokeDashoffset = offsetRpm;
         
-        if (d.rpm > 0.85) {
-            rpmPath.style.stroke = "#e74c3c"; // Redline
-        } else {
-            rpmPath.style.stroke = "#00ffff"; // Cyan
+        // Center info (Speed)
+        let speedStr = d.speed.toString().padStart(3, '0');
+        let speedHtml = "";
+        let foundNonZero = false;
+        for (let i = 0; i < speedStr.length; i++) {
+            if (speedStr[i] === '0' && !foundNonZero && i < speedStr.length - 1) {
+                speedHtml += `<span class="faded-zero">0</span>`;
+            } else {
+                foundNonZero = true;
+                speedHtml += speedStr[i];
+            }
         }
+        document.getElementById("veh-speed").innerHTML = speedHtml;
+        document.getElementById("veh-gear").innerText = d.gear;
         
         // Fuel SVG Logic
         let fuelPath = document.getElementById("fuel-path");
@@ -27,12 +47,7 @@ window.addEventListener("message", function(e) {
         } else {
             fuelPath.style.stroke = "#ffffff"; // White normally
         }
-        
-        // Center info
-        let speedStr = d.speed.toString().padStart(3, '0');
-        document.getElementById("veh-speed").innerText = speedStr;
-        document.getElementById("veh-gear").innerText = d.gear;
-        
+
         // Icons
         let lightsIcon = document.getElementById("icon-lights");
         if (d.lights) {
@@ -102,9 +117,31 @@ window.addEventListener("message", function(e) {
             if (engineShowTimer) clearTimeout(engineShowTimer);
         }
         
+        // GPS Navigation Logic
+        let gpsNav = document.getElementById('gps-nav');
+        if (d.hasWaypoint) {
+            gpsNav.classList.remove('hidden');
+            document.getElementById('gps-distance').innerText = d.waypointDistance.toFixed(2) + ' mi';
+            
+            let arrowHTML = '<i class="fas fa-arrow-up"></i>';
+            if (d.waypointDirection === 'left') {
+                arrowHTML = '<i class="fas fa-arrow-left"></i>';
+            } else if (d.waypointDirection === 'right') {
+                arrowHTML = '<i class="fas fa-arrow-right"></i>';
+            } else if (d.waypointDirection === 'back') {
+                arrowHTML = '<i class="fas fa-arrow-down"></i>';
+            } else if (d.waypointDirection === 'straight') {
+                arrowHTML = '<i class="fas fa-arrow-up"></i>';
+            }
+            document.getElementById('gps-arrow').innerHTML = arrowHTML;
+        } else {
+            gpsNav.classList.add('hidden');
+        }
+        
     } else if (e.data.action === "hideCarHud") {
         document.getElementById("vehicle-hud").style.display = "none";
         document.getElementById("engine-container").style.display = "none";
-        lastEngineHealth = 1000; // Araçtan inince sağlığı sıfırla ki tekrar binince hasarlıysa anlık gözüksün
+        document.getElementById("gps-nav").classList.add("hidden");
+        lastEngineHealth = 1000; 
     }
 });

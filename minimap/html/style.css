@@ -74,6 +74,29 @@ body { overflow: hidden; background: transparent; }
 .e { top: 50%; left: 100%; }
 .w { top: 50%; left: 0%; }
 
+.waypoint-box {
+    position: absolute;
+    left: -5.1vw;
+    top: 80%;
+    transform: translateY(-50%);
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    gap: 0.3vw;
+    padding: 0.3vw 1.0vw 0.3vw 0.5vw;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 0.9vw;
+    z-index: 10;
+    clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+.waypoint-box i {
+    font-size: 0.9vw;
+}
+
 .location-info {
     position: absolute;
     bottom: -5vh;

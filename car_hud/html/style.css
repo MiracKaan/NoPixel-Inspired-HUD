@@ -3,16 +3,16 @@ body { overflow: hidden; background: transparent; }
 
 .vehicle-hud {
     position: absolute;
-    bottom: 0vh;
-    right: 2vw;
+    bottom: 1vh;
+    right: 4vw;
     display: flex;
     align-items: center;
 }
 
 .speedometer {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,31 +27,22 @@ body { overflow: hidden; background: transparent; }
 .rpm-bg {
     fill: none;
     stroke: rgba(40, 40, 40, 0.9);
-    stroke-width: 10;
+    stroke-width: 12;
     stroke-linecap: butt;
-    stroke-dasharray: 8 5;
 }
 
 .rpm-fg {
     fill: none;
-    stroke: #00ffff;
-    stroke-width: 10;
+    stroke-width: 9;
     stroke-linecap: butt;
-    transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
+    transition: stroke-dashoffset 0.1s linear;
 }
 
 .fuel-bg {
-    fill: none;
-    stroke: rgba(40, 40, 40, 0.9);
-    stroke-width: 8;
-    stroke-linecap: butt;
+    /* SVG icinde stroke verildi */
 }
 
 .fuel-fg {
-    fill: none;
-    stroke: #ffffff; /* White like in the picture */
-    stroke-width: 8;
-    stroke-linecap: butt;
     transition: stroke-dashoffset 0.5s ease;
 }
 
@@ -62,58 +53,69 @@ body { overflow: hidden; background: transparent; }
     justify-content: center;
     text-align: center;
     margin-top: 10px;
-    margin-right: 0px; /* Centered, no offset needed */
 }
 
 .gear-circle {
-    width: 34px;
-    height: 34px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 13px;
+    font-weight: 800;
     color: white;
-    background-color: transparent;
-    margin-bottom: -2px;
+    background-color: rgba(15, 15, 15, 0.85);
+    margin-bottom: 1px;
 }
 
 .gear-label {
-    font-size: 9px;
+    font-size: 8px;
     font-weight: 800;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.6);
     letter-spacing: 1px;
-    margin-bottom: -5px;
+    margin-bottom: 1px;
+}
+
+.speed-value-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: -4px;
 }
 
 .speed-value {
-    font-size: 55px;
+    font-size: 58px;
     font-weight: 900;
     color: white;
-    line-height: 1;
+    line-height: 0.9;
     font-style: italic;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-    letter-spacing: -2px;
+    letter-spacing: -4px;
+    display: flex;
+    transform: scaleX(0.7) scaleY(1.1);
+}
+
+.faded-zero {
+    color: rgba(255, 255, 255, 0.35);
 }
 
 .speed-unit {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 800;
-    color: rgba(255,255,255,0.5);
-    font-style: italic;
+    color: rgba(255,255,255,0.6);
     letter-spacing: 1px;
-    margin-top: -8px;
+    margin-top: 0px;
+    font-style: italic;
 }
 
 .fuel-icon-overlay {
     position: absolute;
-    right: -3px; /* Positioned to the right of the fuel bar */
-    top: 85%;
+    right: -20px;
+    top: 50%;
     transform: translateY(-50%);
-    font-size: 14px;
-    color: rgba(255,255,255,0.6);
+    font-size: 10px;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,52 +129,46 @@ body { overflow: hidden; background: transparent; }
 
 .veh-icons {
     position: absolute;
-    right: -31px; /* Pushed further right to make room for fuel bar and fuel icon */
+    right: -55px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
 }
 
 .v-icon {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    background-color: rgba(15,15,15,0.9);
+    background-color: rgba(15,15,15,0.85);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 12px;
-    opacity: 0.4;
-    transition: opacity 0.3s, color 0.3s;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    transition: color 0.3s;
 }
 
 .v-icon.active-lights {
-    opacity: 1.0;
     color: #f1c40f;
 }
 
 .v-icon.active-seatbelt {
-    opacity: 1.0;
     color: #e74c3c;
     animation: flash 1s infinite;
 }
 
 .v-icon.seatbelt-on {
-    opacity: 1.0;
     color: #2ecc71;
 }
 
 .v-icon.locked {
-    opacity: 1.0;
     color: #e74c3c;
 }
 
 .v-icon.unlocked {
-    opacity: 0.4;
-    color: white; /* When unlocked, just look like a normal disabled icon */
+    color: rgba(255,255,255,0.4);
 }
 
 @keyframes flash {
@@ -223,4 +219,6 @@ body { overflow: hidden; background: transparent; }
     transition: width 0.2s linear;
     margin: 0 auto;
 }
+
+
 

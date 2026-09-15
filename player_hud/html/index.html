@@ -9,48 +9,78 @@
 <body>
     <div class="hud-container" style="display:none;" id="hud">
         
-        <div class="mic-container" id="mic-bg">
-            <i class="fa-solid fa-microphone" id="mic-icon"></i>
+        <div class="mic-wrapper">
+            <div class="mic-container" id="mic-bg">
+                <i class="fa-solid fa-microphone" id="mic-icon"></i>
+            </div>
         </div>
+
+        <div class="hud-separator"></div>
 
         <div class="stats-container">
             <div class="bars-row">
                 <!-- Health Column -->
                 <div class="bar-column">
                     <div class="bar-wrapper health-wrapper">
-                        <div class="bar-bg">
+                        <div class="bar-fill" id="health-fill"></div>
+                        <div class="bar-content">
                             <i class="fa-solid fa-heart-pulse"></i>
                             <span>HEALTH</span>
                         </div>
-                        <div class="bar-fill-track">
-                            <div class="bar-fill" id="health-fill"></div>
-                        </div>
                     </div>
-                    <div class="small-icon">
-                        <i class="fa-solid fa-burger" id="hunger-icon"></i>
+                    <div class="sub-bar-container">
+                        <div class="sub-bar-track">
+                            <div class="sub-bar-fill" id="hunger-fill"></div>
+                        </div>
+                        <div class="sub-icon-bg">
+                            <i class="fa-solid fa-burger sub-icon" id="hunger-icon"></i>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Armor Column -->
                 <div class="bar-column">
                     <div class="bar-wrapper armor-wrapper">
-                        <div class="bar-bg armor-bg">
+                        <div class="bar-fill" id="armor-fill"></div>
+                        <div class="bar-content">
                             <i class="fa-solid fa-shield-halved"></i>
                             <span>ARMOR</span>
                         </div>
-                        <div class="bar-fill-track">
-                            <div class="bar-fill" id="armor-fill"></div>
-                        </div>
                     </div>
-                    <div class="small-icon">
-                        <i class="fa-solid fa-droplet" id="thirst-icon"></i>
+                    <div class="sub-bar-container">
+                        <div class="sub-bar-track">
+                            <div class="sub-bar-fill" id="thirst-fill"></div>
+                        </div>
+                        <div class="sub-icon-bg">
+                            <i class="fa-solid fa-droplet sub-icon" id="thirst-icon"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="hud-separator" id="status-separator" style="display: none;"></div>
+
+        <div class="status-icons-wrapper">
+            <div class="status-icon-circle bleed-circle" id="bleed-container" style="display: none;">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+
+            <div class="status-icon-circle bone-circle" id="bone-container" style="display: none;">
+                <i class="fa-solid fa-bone"></i>
+            </div>
+
+            <div class="status-icon-circle stress-circle" id="stress-bg" style="display: none;">
+                <i class="fa-solid fa-brain" id="stress-icon"></i>
+            </div>
+
+            <div class="status-icon-circle devmode-circle" id="devmode-container" style="display: none;">
+                <i class="fa-solid fa-code"></i>
+            </div>
+        </div>
+
     </div>
 
-    <!-- STAMINA & OXYGEN (Orta Alt) -->
     <div class="center-container">
         <div class="center-bar-wrapper" id="stamina-container" style="display:none;">
             <i class="fa-solid fa-person-running center-icon" id="stamina-icon"></i>
@@ -61,19 +91,16 @@
             <div class="center-track"><div class="center-fill" id="oxygen-fill"></div></div>
         </div>
     </div>
-    
-    <!-- WEAPON AMMO HUD -->
+
     <div class="weapon-hud" id="weapon-container" style="display: none;">
         <i class="fa-solid fa-gun weapon-icon"></i>
         <div class="ammo-clip" id="ammo-clip">0</div>
         <div class="ammo-sep">|</div>
         <div class="ammo-total" id="ammo-total">0</div>
     </div>
-    
-    <!-- Custom Crosshair -->
+
     <div class="custom-crosshair" id="crosshair" style="display: none;">
         <div class="crosshair-dot"></div>
-        <!-- Istersen buraya 4 cizgi vb. ekleyebilirsin, dot gayet şık durur -->
     </div>
 
     <!-- Cinematic Bars -->

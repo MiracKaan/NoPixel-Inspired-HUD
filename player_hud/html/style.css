@@ -6,26 +6,81 @@ body { overflow: hidden; background: transparent; }
     bottom: 2.5vh;
     left: 1.5vw;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 15px;
 }
 
+.hud-separator {
+    width: 2px;
+    height: 18px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 1px;
+    margin-top: 9px;
+}
+
+.mic-wrapper {
+    padding: 3px;
+}
+
 .mic-container {
-    width: 45px;
-    height: 45px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background-color: rgba(15, 15, 15, 0.8);
-    border: 4px solid white;
+    background-color: rgba(15, 15, 15, 0.85);
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
-    font-size: 18px;
+    font-size: 11px;
+    position: relative;
+    overflow: hidden;
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+.mic-container i {
+    z-index: 2;
+    position: relative;
+}
+
+.status-icons-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.status-icon-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 13px;
+    margin-top: 4px; /* Center relative to 36px main bars */
     position: relative;
     overflow: hidden;
 }
 
-.mic-container i {
+.devmode-circle {
+    background-color: #2ecc71;
+    font-size: 11px;
+}
+
+.bleed-circle {
+    background-color: #8e44ad;
+}
+
+.bone-circle {
+    background-color: #d68910;
+}
+
+.stress-circle {
+    background-color: rgba(15, 15, 15, 0.85);
+}
+
+.stress-circle i {
     z-index: 2;
     position: relative;
 }
@@ -38,78 +93,109 @@ body { overflow: hidden; background: transparent; }
 
 .bars-row {
     display: flex;
-    gap: 4px;
+    gap: 2px;
 }
 
 .bar-wrapper {
     position: relative;
-    width: 140px;
-    height: 38px;
-    background-color: white;
+    width: 130px;
+    height: 36px;
+    background-color: rgba(15, 15, 15, 0.85);
     border-radius: 20px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.armor-wrapper {
-    background-color: rgba(15, 15, 15, 0.8);
-    color: white;
-    border-radius: 0 20px 20px 0; /* Sol kısımları düz */
-}
 .health-wrapper {
-    color: black;
-    border-radius: 20px 0 0 20px; /* Sağ kısımları düz */
+    border-radius: 20px 0 0 20px;
+}
+.armor-wrapper {
+    border-radius: 0 20px 20px 0;
 }
 
-.bar-bg {
+.bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    transition: width 0.3s ease;
+    z-index: 1;
+}
+
+.bar-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    height: 85%;
     font-size: 14px;
     font-weight: 800;
     font-style: italic;
     letter-spacing: 0.5px;
-}
-
-.bar-fill-track {
-    width: 100%;
-    height: 15%;
-    background-color: rgba(255,255,255,0.2);
-}
-.health-wrapper .bar-fill-track {
-    background-color: rgba(0,0,0,0.1);
-}
-
-.bar-fill {
-    height: 100%;
-    width: 100%;
-    transition: width 0.3s ease;
-}
-
-.health-wrapper .bar-fill {
-    background-color: #2ecc71;
-}
-
-.armor-wrapper .bar-fill {
-    background-color: #3498db;
+    color: white;
+    mix-blend-mode: difference;
 }
 
 .bar-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 3px;
+    width: 130px;
 }
 
-.small-icon {
-    font-size: 14px;
-    filter: drop-shadow(0px 0px 3px rgba(0,0,0,0.8));
-    opacity: 0.9;
-    transition: filter 0.3s ease;
+.sub-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    width: 130px;
+}
+
+.sub-bar-track {
+    height: 3px;
+    background-color: rgba(15, 15, 15, 0.85);
+    overflow: hidden;
+}
+
+.bar-column:first-child .sub-bar-track {
+    width: 115px;
+    align-self: flex-end;
+    border-radius: 3px 0 0 3px;
+}
+
+.bar-column:last-child .sub-bar-track {
+    width: 115px;
+    align-self: flex-start;
+    border-radius: 0 3px 3px 0;
+}
+
+.sub-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    transition: width 0.3s ease;
+}
+
+.sub-icon-bg {
+    width: 20px;
+    height: 20px;
+    background-color: rgba(15, 15, 15, 0.65);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sub-icon {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* BOTTOM CENTER STAMINA/OXYGEN */
@@ -151,7 +237,7 @@ body { overflow: hidden; background: transparent; }
     width: 100%;
     background-color: white;
     transition: width 0.2s linear;
-    margin: 0 auto; /* Bu sayede genişlik düşünce ortada kalır, yanlardan merkeze doğru küçülür */
+    margin: 0 auto; 
 }
 
 #oxygen-fill {

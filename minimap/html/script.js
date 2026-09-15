@@ -7,6 +7,20 @@ window.addEventListener("message", function(event) {
         document.getElementById("street").innerText = d.street;
         document.getElementById("zone").innerText = d.zone;
         
+        if (d.waypoint) {
+            document.getElementById("waypoint-box").style.display = "flex";
+            document.getElementById("waypoint-dist").innerText = d.waypoint;
+            
+            let arrowClass = "fa-arrow-up";
+            if (d.waypointDir === "left") arrowClass = "fa-arrow-left";
+            else if (d.waypointDir === "right") arrowClass = "fa-arrow-right";
+            else if (d.waypointDir === "down") arrowClass = "fa-arrow-down";
+            
+            document.querySelector("#waypoint-box i").className = "fa-solid " + arrowClass;
+        } else {
+            document.getElementById("waypoint-box").style.display = "none";
+        }
+        
         document.getElementById("compass-letters").style.transform = `rotate(${-d.heading}deg)`;
         
         const letters = document.querySelectorAll(".letter");
@@ -21,3 +35,4 @@ window.addEventListener("message", function(event) {
         document.getElementById("safezone-warning").style.display = "none";
     }
 });
+

@@ -85,6 +85,11 @@ CreateThread(function()
 end)
 
 local cinematicMode = false
+local showMinimap = true
+
+RegisterCommand("togglemap", function()
+    showMinimap = not showMinimap
+end, false)
 
 RegisterNetEvent("hud:client:ToggleCinematic", function(state)
     cinematicMode = state
@@ -106,7 +111,7 @@ CreateThread(function()
         HideHudComponentThisFrame(21)
         HideHudComponentThisFrame(22)
         
-        if not IsPauseMenuActive() and not cinematicMode then
+        if not IsPauseMenuActive() and not cinematicMode and showMinimap then
             DisplayRadar(true)
             BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
             ScaleformMovieMethodAddParamInt(3)
@@ -136,15 +141,44 @@ CreateThread(function()
         local zoneLabel = GetLabelText(zone)
         if zoneLabel == nil or zoneLabel == "" then zoneLabel = zone end
 
-        if not IsPauseMenuActive() and not cinematicMode then
+        local waypointData = nil
+        local waypointDir = "up"
+        local waypointBlip = GetFirstBlipInfoId(8)
+        if DoesBlipExist(waypointBlip) then
+            local wpCoords = GetBlipInfoIdCoord(waypointBlip)
+            local dist = #(coords - wpCoords)
+            
+            if dist > 15.0 then
+                local miles = dist * 0.000621371
+                waypointData = string.format("%.2f mi", miles)
+                
+                local dx = wpCoords.x - coords.x
+                local dy = wpCoords.y - coords.y
+                if dist > 0 then dx = dx / dist; dy = dy / dist end
+                
+                local rad = math.rad(GetEntityHeading(ped))
+                local dotFwd = (dx * -math.sin(rad)) + (dy * math.cos(rad))
+                local dotRight = (dx * math.cos(rad)) + (dy * math.sin(rad))
+                
+                if dotFwd > 0.6 then waypointDir = "up"
+                elseif dotFwd < -0.3 then waypointDir = "down"
+                elseif dotRight > 0.4 then waypointDir = "right"
+                else waypointDir = "left" end
+            end
+        end
+
+        if not IsPauseMenuActive() and not cinematicMode and showMinimap then
             SendNUIMessage({
                 action = "updateCompass",
                 heading = heading,
                 street = string.upper(streetName),
-                zone = string.upper(zoneLabel)
+                zone = string.upper(zoneLabel),
+                waypoint = waypointData,
+                waypointDir = waypointDir
             })
         else
             SendNUIMessage({ action = "hideCompass" })
         end
     end
 end)
+

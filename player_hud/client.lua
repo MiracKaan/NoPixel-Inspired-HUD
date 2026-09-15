@@ -1,10 +1,15 @@
 local QBCore = exports["qb-core"]:GetCoreObject()
 local hunger = 100
 local thirst = 100
+local stress = 0
 
 RegisterNetEvent("hud:client:UpdateNeeds", function(newHunger, newThirst)
     hunger = newHunger
     thirst = newThirst
+end)
+
+RegisterNetEvent("hud:client:UpdateStress", function(newStress)
+    stress = newStress
 end)
 
 local staminaPenalty = 0.0
@@ -22,12 +27,79 @@ RegisterCommand("cinematic", function()
     })
 end, false)
 
+local isBleeding = false
+local isBoneBroken = false
+local devmode = false
+
+RegisterCommand("developermode", function()
+    devmode = not devmode
+end, false)
+
+RegisterCommand("bleeding", function()
+    isBleeding = not isBleeding
+end, false)
+
+RegisterCommand("broken", function()
+    isBoneBroken = not isBoneBroken
+end, false)
+
+local lastSpeed = 0
 CreateThread(function()
     while true do
         Wait(200)
         local ped = PlayerPedId()
+        if IsPedInAnyVehicle(ped, false) then
+            local veh = GetVehiclePedIsIn(ped, false)
+            local speed = GetEntitySpeed(veh)
+            if lastSpeed - speed > Config.CrashSpeedThreshold then
+                isBoneBroken = true
+                ShakeGameplayCam("SMALL_EXPLOSION_SHAKE", 0.5)
+            end
+            lastSpeed = speed
+        else
+            lastSpeed = 0
+        end
+    end
+end)
+
+CreateThread(function()
+    while true do
+        Wait(200)
+        local ped = PlayerPedId()
+        local rawHealth = GetEntityHealth(ped)
         
-        -- Catismada Stamina Tuketimi (Penalty System)
+        if rawHealth >= GetEntityMaxHealth(ped) - 5 then
+            isBleeding = false
+            isBoneBroken = false
+            ClearEntityLastWeaponDamage(ped)
+        end
+        
+        if Config.UseQbxMedical then
+            
+            if LocalPlayer.state.isBleeding ~= nil then
+                isBleeding = LocalPlayer.state.isBleeding
+            elseif LocalPlayer.state.bleedingLevel ~= nil then
+                isBleeding = (LocalPlayer.state.bleedingLevel > 0)
+            end
+            
+           
+            if LocalPlayer.state.isBoneBroken ~= nil then
+                isBoneBroken = LocalPlayer.state.isBoneBroken
+            end
+        end
+        
+        if not isBleeding then
+            local rawHealth = GetEntityHealth(ped)
+            if rawHealth < Config.BleedingHealthThreshold then 
+                isBleeding = true
+            end
+            
+            if HasEntityBeenDamagedByWeapon(ped, 0, 2) then
+                ClearEntityLastWeaponDamage(ped)
+                isBleeding = true
+            end
+        end
+
         if IsPedShooting(ped) then
             staminaPenalty = staminaPenalty + 3.0
             if staminaPenalty > 100.0 then staminaPenalty = 100.0 end
@@ -62,10 +134,8 @@ CreateThread(function()
                 voice = LocalPlayer.state.proximity.index
             end
             
-            -- Custom Crosshair Icin Nisan Alma Kontrolu
             local isAiming = IsPlayerFreeAiming(PlayerId())
             
-            -- Silah ve Mermi Kontrolü
             local weapon = GetSelectedPedWeapon(ped)
             local hasWeapon = false
             local ammoInClip = 0
@@ -87,6 +157,7 @@ CreateThread(function()
                     armor = armor,
                     hunger = hunger,
                     thirst = thirst,
+                    stress = stress,
                     stamina = finalStamina,
                     isUnderwater = isUnderwater,
                     oxygen = oxygen,
@@ -95,7 +166,10 @@ CreateThread(function()
                     isAiming = isAiming,
                     hasWeapon = hasWeapon,
                     ammoClip = ammoInClip,
-                    ammoTotal = ammoTotal
+                    ammoTotal = ammoTotal,
+                    bleed = isBleeding,
+                    bone = isBoneBroken,
+                    devmode = devmode
                 }
             })
         else
@@ -112,3 +186,11 @@ CreateThread(function()
         end
     end
 end)
+
+for _, eventName in ipairs(Config.HealingEvents) do
+    RegisterNetEvent(eventName, function()
+        isBleeding = false
+        isBoneBroken = false
+        ClearEntityLastWeaponDamage(PlayerPedId())
+    end)
+end

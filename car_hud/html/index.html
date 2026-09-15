@@ -13,23 +13,37 @@
             <svg class="gauges" viewBox="0 0 200 200" style="overflow: visible;">
                 <defs>
                     <mask id="rpm-mask">
-                        <!-- Extended mask for RPM (Left to Bottom-Right) -->
-                        <path fill="none" stroke="white" stroke-width="12" stroke-dasharray="8 5" 
-                              d="M 26.4,142.5 A 85,85 0 1,1 160.1,160.1" />
+                        <path fill="none" stroke="white" stroke-width="12" stroke-dasharray="16 2" 
+                              d="M 27.3,142.0 A 84,84 0 1,1 172.7,142.0" />
                     </mask>
+                    <linearGradient id="gas-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="25%" stop-color="#ffffff" />
+                        <stop offset="25.1%" stop-color="#ffff00" />
+                        <stop offset="75%" stop-color="#ffff00" />
+                        <stop offset="75.1%" stop-color="#ff0000" />
+                        <stop offset="100%" stop-color="#ff0000" />
+                    </linearGradient>
+                    <linearGradient id="elec-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00d0ff" />
+                        <stop offset="100%" stop-color="#0055ff" />
+                    </linearGradient>
                 </defs>
                 
-                <!-- RPM Arc (Yarım Halka - Uzatılmış) -->
-                <path class="rpm-bg" d="M 26.4,142.5 A 85,85 0 1,1 160.1,160.1" />
+                <!-- RPM Background (Empty Dashes) -->
+                <path class="rpm-bg" mask="url(#rpm-mask)" d="M 27.3,142.0 A 84,84 0 1,1 172.7,142.0" />
+                
+                <!-- RPM Foreground (Colored Dashes) -->
                 <path class="rpm-fg" mask="url(#rpm-mask)" id="rpm-path" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" 
-                      d="M 26.4,142.5 A 85,85 0 1,1 160.1,160.1" />
+                      d="M 27.3,142.0 A 84,84 0 1,1 172.7,142.0" style="stroke: url(#gas-grad); stroke-width: 12;" />
 
-                <!-- FUEL Arc (Right side, outer) -->
-                <!-- Drawn from angle 38 (slightly up from bottom-right) to angle -32 -->
-                <!-- Radius is 99 to push it a tiny bit further right -->
-                <path class="fuel-bg" d="M 178.0,160.9 A 99,99 0 0,0 184.0,47.5" />
-                <path class="fuel-fg" id="fuel-path" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" 
-                      d="M 178.0,160.9 A 99,99 0 0,0 184.0,47.5" />
+                <!-- Outer Bracket for Fuel -->
+                <path fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" d="M 219.8,40.0 A 134,134 0 0,1 219.8,160.0" />
+
+                <!-- FUEL Arc (r=98, solid, from bottom to top) -->
+                <path class="fuel-bg" fill="none" stroke="rgba(40,40,40,0.9)" stroke-width="8" stroke-linecap="butt" d="M 187.0,145.0 A 98,98 0 0,0 156.6,20.0" />
+                <path class="fuel-fg" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="butt" id="fuel-path" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" 
+                      d="M 187.0,145.0 A 98,98 0 0,0 156.6,20.0" />
             </svg>
             
             <div class="speed-center">
@@ -38,13 +52,16 @@
                 </div>
                 <span class="gear-label">GEAR</span>
                 <div class="speed-value-container">
-                    <div class="speed-value" id="veh-speed">011</div>
+                    <div class="speed-value" id="veh-speed">
+                        <span class="faded-zero">0</span><span class="faded-zero">0</span>1
+                    </div>
                 </div>
-                <div class="speed-unit">KMH</div>
+                <div class="speed-unit">MPH</div>
             </div>
             
             <div class="fuel-icon-overlay" id="icon-fuel">
-                <i class="fa-solid fa-gas-pump"></i>
+                <i class="fa-solid fa-gas-pump" id="fuel-type-icon"></i>
+                <i class="fa-solid fa-caret-right" style="font-size: 8px; margin-left: 2px;"></i>
             </div>
 
             <!-- Right side stacked icons -->
@@ -56,7 +73,6 @@
         </div>
     </div>
     
-    <!-- Engine Health Bar (Orta Alt - Tıpkı Stamina Gibi) -->
     <div class="center-container" id="engine-container" style="display: none;">
         <div class="center-bar-wrapper">
             <i class="fa-solid fa-car-burst center-icon" id="engine-icon"></i>
@@ -66,6 +82,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    </script>
 </body>
 </html>
+
