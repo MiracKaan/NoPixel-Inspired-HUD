@@ -111,7 +111,8 @@ CreateThread(function()
         HideHudComponentThisFrame(21)
         HideHudComponentThisFrame(22)
         
-        if not IsPauseMenuActive() and not cinematicMode and showMinimap then
+        local isInvOpen = LocalPlayer.state.invOpen or false
+        if not IsPauseMenuActive() and not cinematicMode and showMinimap and not isInvOpen then
             DisplayRadar(true)
             BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
             ScaleformMovieMethodAddParamInt(3)
@@ -167,7 +168,8 @@ CreateThread(function()
             end
         end
 
-        if not IsPauseMenuActive() and not cinematicMode and showMinimap then
+        local isInvOpen = LocalPlayer.state.invOpen or false
+        if not IsPauseMenuActive() and not cinematicMode and showMinimap and not isInvOpen then
             SendNUIMessage({
                 action = "updateCompass",
                 heading = heading,
@@ -181,4 +183,5 @@ CreateThread(function()
         end
     end
 end)
+
 

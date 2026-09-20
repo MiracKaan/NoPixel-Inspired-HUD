@@ -85,6 +85,40 @@ window.addEventListener("message", function(e) {
             lockIcon.innerHTML = '<i class="fa-solid fa-unlock"></i>';
         }
         
+                // Nitro Logic
+                let nitroIcon = document.getElementById("icon-nitro");
+        let nitroPath = document.getElementById("nitro-path");
+        let nitroBg = document.getElementById("nitro-bg");
+        let nitroBracket = document.getElementById("nitro-bracket");
+
+        if (d.nitro && d.nitro > 0) {
+            if (nitroIcon) nitroIcon.style.display = "flex";
+            if (nitroPath) nitroPath.style.display = "block";
+            if (nitroBg) nitroBg.style.display = "block";
+            if (nitroBracket) nitroBracket.style.display = "block";
+            
+            if (nitroPath) {
+                let offsetNitro = 100 - d.nitro;
+                nitroPath.style.strokeDashoffset = offsetNitro;
+            }
+
+            if (d.purge >= 100) {
+                if (nitroIcon) nitroIcon.classList.add("nitro-purge-alert");
+                if (nitroPath) nitroPath.style.stroke = "#ff0000";
+            } else {
+                if (nitroIcon) nitroIcon.classList.remove("nitro-purge-alert");
+                if (nitroPath) nitroPath.style.stroke = "#00d0ff";
+            }
+        } else {
+            if (nitroIcon) {
+                nitroIcon.style.display = "none";
+                nitroIcon.classList.remove("nitro-purge-alert");
+            }
+            if (nitroPath) nitroPath.style.display = "none";
+            if (nitroBg) nitroBg.style.display = "none";
+            if (nitroBracket) nitroBracket.style.display = "none";
+        }
+
         // Engine Health Logic
         let isDamagedNow = false;
         if (d.engine < lastEngineHealth && d.engine < 995) {
@@ -98,11 +132,11 @@ window.addEventListener("message", function(e) {
             document.getElementById("engine-icon").style.color = enginePct <= 10 ? "#e74c3c" : "white";
             
             if (enginePct <= 10) {
-                // %10'un altındaysa kalıcı olarak göster
+                // %10'un altÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±ndaysa kalÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±cÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â± olarak gÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶ster
                 document.getElementById("engine-container").style.display = "flex";
                 if (engineShowTimer) clearTimeout(engineShowTimer);
             } else if (isDamagedNow) {
-                // Hasar aldığında 3 saniye göster
+                // Hasar aldÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±nda 3 saniye gÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶ster
                 document.getElementById("engine-container").style.display = "flex";
                 if (engineShowTimer) clearTimeout(engineShowTimer);
                 
@@ -117,31 +151,9 @@ window.addEventListener("message", function(e) {
             if (engineShowTimer) clearTimeout(engineShowTimer);
         }
         
-        // GPS Navigation Logic
-        let gpsNav = document.getElementById('gps-nav');
-        if (d.hasWaypoint) {
-            gpsNav.classList.remove('hidden');
-            document.getElementById('gps-distance').innerText = d.waypointDistance.toFixed(2) + ' mi';
-            
-            let arrowHTML = '<i class="fas fa-arrow-up"></i>';
-            if (d.waypointDirection === 'left') {
-                arrowHTML = '<i class="fas fa-arrow-left"></i>';
-            } else if (d.waypointDirection === 'right') {
-                arrowHTML = '<i class="fas fa-arrow-right"></i>';
-            } else if (d.waypointDirection === 'back') {
-                arrowHTML = '<i class="fas fa-arrow-down"></i>';
-            } else if (d.waypointDirection === 'straight') {
-                arrowHTML = '<i class="fas fa-arrow-up"></i>';
-            }
-            document.getElementById('gps-arrow').innerHTML = arrowHTML;
-        } else {
-            gpsNav.classList.add('hidden');
-        }
-        
     } else if (e.data.action === "hideCarHud") {
         document.getElementById("vehicle-hud").style.display = "none";
         document.getElementById("engine-container").style.display = "none";
-        document.getElementById("gps-nav").classList.add("hidden");
-        lastEngineHealth = 1000; 
+        lastEngineHealth = 1000; // AraÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§tan inince saÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸lÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â± sÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±rla ki tekrar binince hasarlÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±ysa anlÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â±k gÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¶zÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼ksÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€Â¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¼n
     }
 });

@@ -1,19 +1,23 @@
 Config = {}
 
--- qbx_medical veya gelişmiş sağlık scriptleri entegrasyonu
--- Eğer true ise, kanama ve kırık durumlarını qbx_medical'in statebag/export'larından (veya benzeri bir scriptten) almaya çalışır.
+Config.EnableStress = true -- Stres gostergesini acip kapatir
+
+Config.Stress = {
+    chance = 0.1, -- Ates ederken stres kazanma sansi (0.1 = %10)
+    minForShaking = 50, -- Ekranda titreme/blur baslamasi icin minimum stres
+    minSpeedForStress = 160, -- Kemer takiliyken stres baslangic hizi (km/h)
+    minSpeedForStressUnbuckled = 80, -- Kemer TAKILI DEGILKEN stres baslangic hizi (km/h)
+    whitelistedWeapons = { -- Stres VERMEYEN silahlar
+        `weapon_petrolcan`,
+        `weapon_hazardcan`,
+        `weapon_fireextinguisher`,
+    }
+}
+
 Config.UseQbxMedical = false
-
--- Kaza anında kemik kırılmasını tetikleyecek hız düşüşü eşiği (m/s)
--- (Eğer qbx_medical kendi kırık sistemini kullanıyorsa bu değer yedek olarak kalır)
 Config.CrashSpeedThreshold = 15.0
+Config.BleedingHealthThreshold = 170
 
--- Otomatik kanamanın başlayacağı can seviyesi
--- (Eğer qbx_medical aktifse, kanama verisi direkt scriptten çekilir. Bu değer yedek (fallback) içindir.)
-Config.BleedingHealthThreshold = 140
-
--- Kırık ve kanamanın otomatik sıfırlanacağı (iyileşeceği) event'ler
--- /revive atıldığında, hastanede tedavi olunduğunda veya oyuna ilk girildiğinde buradaki eventler çalışır.
 Config.HealingEvents = {
     "hospital:client:Revive",
     "hospital:client:HealInjuries",

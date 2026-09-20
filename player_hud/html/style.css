@@ -326,3 +326,12 @@ body { overflow: hidden; background: transparent; }
     bottom: 0;
 }
 
+
+@keyframes bleedPulse {
+    0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.4); transform: scale(1); }
+    50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.9); transform: scale(1.1); }
+    100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.4); transform: scale(1); }
+}
+.bleed-critical {
+    animation: bleedPulse 0.8s infinite;
+}

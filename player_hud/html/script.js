@@ -50,7 +50,7 @@ window.addEventListener("message", function(event) {
         
         let stressBg = document.getElementById("stress-bg");
         let stressIcon = document.getElementById("stress-icon");
-        if (d.stress > 0) {
+        if (d.showStress && d.stress > 0) {
             stressBg.style.display = "flex";
             stressBg.style.background = `linear-gradient(to top, rgba(231, 76, 60, 0.4) ${d.stress}%, rgba(15, 15, 15, 0.85) ${d.stress}%)`;
             stressIcon.style.color = d.stress > 50 ? "#e74c3c" : "white";
@@ -59,9 +59,18 @@ window.addEventListener("message", function(event) {
         }
 
         if (d.bleed) {
-            document.getElementById("bleed-container").style.display = "flex";
+            let bleedContainer = document.getElementById("bleed-container");
+            bleedContainer.style.display = "flex";
+            bleedContainer.style.background = `linear-gradient(to top, rgba(139, 0, 0, 0.6) ${d.bleedLevel}%, rgba(15, 15, 15, 0.85) ${d.bleedLevel}%)`;
+            
+            if (d.bleedLevel > 80) {
+                bleedContainer.classList.add("bleed-critical");
+            } else {
+                bleedContainer.classList.remove("bleed-critical");
+            }
         } else {
             document.getElementById("bleed-container").style.display = "none";
+            document.getElementById("bleed-container").classList.remove("bleed-critical");
         }
 
         if (d.bone) {
@@ -76,7 +85,7 @@ window.addEventListener("message", function(event) {
             document.getElementById("devmode-container").style.display = "none";
         }
 
-        if (d.stress > 0 || d.bleed || d.bone || d.devmode) {
+        if ((d.showStress && d.stress > 0) || d.bleed || d.bone || d.devmode) {
             document.getElementById("status-separator").style.display = "block";
         } else {
             document.getElementById("status-separator").style.display = "none";

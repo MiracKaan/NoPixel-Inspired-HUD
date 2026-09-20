@@ -222,3 +222,44 @@ body { overflow: hidden; background: transparent; }
 
 
 
+@keyframes nitroPurgeFlash {
+    0% { border-color: #ffaa00 !important; color: #ffaa00 !important; box-shadow: 0 0 10px #ffaa00 !important; }
+    50% { border-color: #ff0000 !important; color: #ff0000 !important; box-shadow: 0 0 20px #ff0000 !important; }
+    100% { border-color: #ffaa00 !important; color: #ffaa00 !important; box-shadow: 0 0 10px #ffaa00 !important; }
+}
+    50% { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+    100% { border-color: #ffaa00; color: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+}
+
+.nitro-purge-alert {
+    animation: nitroPurgeFlash 0.5s infinite !important;
+}
+
+@keyframes nitroPurgeFlash {
+    0% { border-color: #ffaa00 !important; color: #ffaa00 !important; box-shadow: 0 0 10px #ffaa00 !important; }
+    50% { border-color: #ff0000 !important; color: #ff0000 !important; box-shadow: 0 0 20px #ff0000 !important; }
+    100% { border-color: #ffaa00 !important; color: #ffaa00 !important; box-shadow: 0 0 10px #ffaa00 !important; }
+}
+
+.nitro-purge-alert {
+    animation: nitroPurgeFlash 0.5s infinite !important;
+}.nitro-fg {
+    transition: stroke-dashoffset 0.5s ease-out, stroke 0.3s;
+}
+
+.nitro-icon-overlay {
+    position: absolute;
+    left: -28px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    color: #00d0ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s;
+}
+
+.nitro-icon-overlay.nitro-purge-alert {
+    animation: nitroPurgeFlash 0.5s infinite !important;
+}
