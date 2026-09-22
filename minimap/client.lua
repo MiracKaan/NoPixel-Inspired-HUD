@@ -18,14 +18,14 @@ CreateThread(function()
         local safeZoneOffsetX = resX * ((1.0 - safeZone) / 2.0)
         local safeZoneOffsetY = resY * ((1.0 - safeZone) / 2.0)
         
-        -- Orijinal mükemmel değerlerin (1920x1080)
+        -- Orijinal mÃƒÆ’Ã‚Â¼kemmel deÃƒâ€Ã…Â¸erlerin (1920x1080)
         local targetX = 0.837
         local targetY = 0.110
         local targetWidth = 0.120
-        -- Haritanın yuvarlak olması için AspectRatio ile büküyoruz
+        -- HaritanÃƒâ€Ã‚Â±n yuvarlak olmasÃƒâ€Ã‚Â± iÃƒÆ’Ã‚Â§in AspectRatio ile bÃƒÆ’Ã‚Â¼kÃƒÆ’Ã‚Â¼yoruz
         local targetHeight = 0.75 * targetWidth * aspectRatio
         
-        -- SafeZone'u GTA için tersine çevirme (Çünkü GTA L,T'de otomatik SafeZone uygular)
+        -- SafeZone'u GTA iÃƒÆ’Ã‚Â§in tersine ÃƒÆ’Ã‚Â§evirme (ÃƒÆ’Ã¢â‚¬Â¡ÃƒÆ’Ã‚Â¼nkÃƒÆ’Ã‚Â¼ GTA L,T'de otomatik SafeZone uygular)
         local gtaX = ((targetX * resX) - safeZoneOffsetX) / (resX * safeZone)
         local gtaY = ((targetY * resY) - safeZoneOffsetY) / (resY * safeZone)
         local gtaWidth = targetWidth / safeZone
@@ -59,7 +59,7 @@ CreateThread(function()
             local rx, ry = GetActiveScreenResolution()
             local sz = GetSafeZoneSize()
             
-            -- Uyarı Ekranı Mantığı
+            -- UyarÃƒâ€Ã‚Â± EkranÃƒâ€Ã‚Â± MantÃƒâ€Ã‚Â±Ãƒâ€Ã…Â¸Ãƒâ€Ã‚Â±
             if sz < 0.99 then
                 if not warningActive then
                     warningActive = true
@@ -112,7 +112,8 @@ CreateThread(function()
         HideHudComponentThisFrame(22)
         
         local isInvOpen = LocalPlayer.state.invOpen or false
-        if not IsPauseMenuActive() and not cinematicMode and showMinimap and not isInvOpen then
+        local isLoggedIn = LocalPlayer.state.isLoggedIn or false
+        if not IsPauseMenuActive() and not cinematicMode and showMinimap and not isInvOpen and isLoggedIn then
             DisplayRadar(true)
             BeginScaleformMovieMethod(minimap, "SETUP_HEALTH_ARMOUR")
             ScaleformMovieMethodAddParamInt(3)
@@ -134,6 +135,12 @@ CreateThread(function()
         if heading < 0 then heading = heading + 360 end
         if heading > 360 then heading = heading - 360 end
         
+        local isLoggedIn = LocalPlayer.state.isLoggedIn or false
+        if not isLoggedIn then
+            SendNUIMessage({ action = "hideCompass" })
+            goto skipData
+        end
+
         local street1, street2 = GetStreetNameAtCoord(coords.x, coords.y, coords.z)
         local streetName = GetStreetNameFromHashKey(street1)
         if streetName == nil or streetName == "" then streetName = "" end
@@ -181,6 +188,7 @@ CreateThread(function()
         else
             SendNUIMessage({ action = "hideCompass" })
         end
+        ::skipData::
     end
 end)
 

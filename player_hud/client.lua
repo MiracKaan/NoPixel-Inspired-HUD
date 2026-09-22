@@ -3,6 +3,30 @@ local hunger = 100
 local thirst = 100
 local stress = 0
 local isBleeding = false
+local isTalkingOnRadio = false
+local pName = "Unknown"
+local pJob = "Unemployed"
+local pCash = 0
+local pBank = 0
+
+local function updatePlayerDetails(PlayerData)
+    if not PlayerData then return end
+    if PlayerData.charinfo then
+        pName = (PlayerData.charinfo.firstname or "") .. " " .. (PlayerData.charinfo.lastname or "")
+    end
+    if PlayerData.job then
+        local jobName = PlayerData.job.label or ""
+        local gradeName = ""
+        if PlayerData.job.grade and PlayerData.job.grade.name then
+            gradeName = PlayerData.job.grade.name
+        end
+        pJob = jobName .. " - " .. gradeName
+    end
+    if PlayerData.money then
+        pCash = PlayerData.money.cash or 0
+        pBank = PlayerData.money.bank or 0
+    end
+end
 local isBoneBroken = false
 local bleedPercent = 0
 
@@ -12,21 +36,27 @@ AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
     if PlayerData and PlayerData.metadata then
         hunger = PlayerData.metadata['hunger'] or 100
         thirst = PlayerData.metadata['thirst'] or 100
-        stress = PlayerData.metadata['stress'] or 0
+                stress = PlayerData.metadata['stress'] or 0
     end
+    updatePlayerDetails(PlayerData)
 end)
 
 RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
     if val and val.metadata then
         hunger = val.metadata['hunger'] or hunger
         thirst = val.metadata['thirst'] or thirst
-        stress = val.metadata['stress'] or stress
+                stress = val.metadata['stress'] or stress
     end
+    updatePlayerDetails(val)
 end)
 
 RegisterNetEvent('hud:client:UpdateNeeds', function(newHunger, newThirst)
     hunger = newHunger
     thirst = newThirst
+end)
+
+RegisterNetEvent('pma-voice:radioActive', function(talking)
+    isTalkingOnRadio = talking
 end)
 
 RegisterNetEvent('hud:client:UpdateStress', function(newStress)
@@ -61,6 +91,12 @@ RegisterCommand("developermode", function() devmode = not devmode end, false)
 CreateThread(function()
     while true do
         Wait(200)
+
+        if not LocalPlayer.state.isLoggedIn then
+            SendNUIMessage({ action = "hide" })
+            goto continue
+        end
+
         local ped = PlayerPedId()
 
         -- Her dongude kirik sifirla, kanama ise metadata'dan kontrol et
@@ -205,6 +241,7 @@ CreateThread(function()
                     isUnderwater = isUnderwater,
                     oxygen = oxygen,
                     isTalking = isTalking,
+                      isRadio = isTalkingOnRadio,
                     voice = voice,
                     isAiming = isAiming,
                     hasWeapon = hasWeapon,
@@ -213,12 +250,18 @@ CreateThread(function()
                     bleed = isBleeding,
                     bleedLevel = bleedPercent,
                     bone = isBoneBroken,
-                    devmode = devmode
+                                        devmode = devmode,
+                    pId = GetPlayerServerId(PlayerId()),
+                    pName = string.upper(pName),
+                    pJob = string.upper(pJob),
+                    pCash = pCash,
+                    pBank = pBank
                 }
             })
         else
             SendNUIMessage({ action = "hide" })
         end
+        ::continue::
     end
 end)
 

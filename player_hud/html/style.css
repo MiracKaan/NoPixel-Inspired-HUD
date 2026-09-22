@@ -335,3 +335,94 @@ body { overflow: hidden; background: transparent; }
 .bleed-critical {
     animation: bleedPulse 0.8s infinite;
 }
+
+/* Top Left Player Info HUD */
+.player-info-hud {
+    position: absolute;
+    top: 3vh;
+    left: 2.5vw;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 8px;
+    font-family: 'Montserrat', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    z-index: 100;
+}
+
+.pi-id {
+    background: rgba(240, 240, 240, 0.95);
+    color: #111;
+    font-weight: 900;
+    font-size: 11px;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-style: italic;
+    text-shadow: none;
+    line-height: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin-top: 1px;
+}
+
+.pi-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.pi-name {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0.5px;
+}
+
+.pi-job {
+    color: rgba(220, 220, 220, 0.85);
+    font-size: 10px;
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.pi-money {
+    display: flex;
+    gap: 6px;
+}
+
+.money-badge {
+    background: rgba(35, 35, 35, 0.95);
+    border-radius: 5px;
+    padding: 3px 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 900;
+    font-style: italic;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cash-badge {
+    color: #ffffff;
+}
+
+.cash-badge i {
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+}
+
+.bank-badge {
+    color: #00d0ff;
+}
+
+.bank-badge i {
+    color: #00d0ff;
+    font-size: 10px;
+}

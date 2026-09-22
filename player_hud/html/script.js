@@ -1,8 +1,20 @@
 window.addEventListener("message", function(event) {
     if (event.data.action === "update") {
         document.getElementById("hud").style.display = "flex";
-        
+        document.getElementById("player-info-hud").style.display = "flex";
         let d = event.data.data;
+
+        let formatMoney = (amount) => {
+            return "$" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        };
+
+        if (d.pId !== undefined) document.getElementById("player-id").innerText = d.pId;
+        if (d.pName !== undefined) document.getElementById("player-name").innerText = d.pName;
+        if (d.pJob !== undefined) document.getElementById("player-job").innerText = d.pJob;
+        if (d.pCash !== undefined) document.getElementById("player-cash").innerText = formatMoney(d.pCash);
+        if (d.pBank !== undefined) document.getElementById("player-bank").innerText = formatMoney(d.pBank);
+        
+        
         
         document.getElementById("health-fill").style.width = d.health + "%";
         document.getElementById("armor-fill").style.width = d.armor + "%";
@@ -40,8 +52,14 @@ window.addEventListener("message", function(event) {
         else if (d.voice == 2) fill = 66;
         else if (d.voice >= 3) fill = 100;
         
-        if (d.isTalking) {
-            micIcon.style.color = "#b026ff";
+        if (d.isRadio) {
+            micIcon.className = "fa-solid fa-walkie-talkie";
+        } else {
+            micIcon.className = "fa-solid fa-microphone";
+        }
+
+        if (d.isTalking || d.isRadio) {
+            micIcon.style.color = (d.isRadio) ? "#e74c3c" : "#b026ff";
             mic.style.background = `linear-gradient(to top, rgba(176, 38, 255, 0.4) ${fill}%, rgba(15, 15, 15, 0.85) ${fill}%)`;
         } else {
             micIcon.style.color = "white";
@@ -108,6 +126,7 @@ window.addEventListener("message", function(event) {
         }
     } else if (event.data.action === "hide") {
         document.getElementById("hud").style.display = "none";
+        document.getElementById("player-info-hud").style.display = "none";
         document.getElementById("stamina-container").style.display = "none";
         document.getElementById("oxygen-container").style.display = "none";
         document.getElementById("weapon-container").style.display = "none";

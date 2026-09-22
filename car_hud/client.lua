@@ -74,12 +74,9 @@ CreateThread(function()
                 isElectric = true
             end
             
-<<<<<<< Updated upstream
-=======
             local nitroLvl = Entity(veh).state.nd_nitro_nos or 0
             local purgeLvl = Entity(veh).state.nd_nitro_purge or 0
 
->>>>>>> Stashed changes
             SendNUIMessage({
                 action = "updateCarHud",
                 speed = speed,
@@ -90,13 +87,9 @@ CreateThread(function()
                 seatbelt = seatbelt,
                 locked = isLocked,
                 engine = engineHealth,
-<<<<<<< Updated upstream
-                isElectric = isElectric
-=======
                 isElectric = isElectric,
                 nitro = nitroLvl,
                 purge = purgeLvl
->>>>>>> Stashed changes
             })
         else
             if wasInVehicle then
@@ -110,8 +103,6 @@ CreateThread(function()
         end
     end
 end)
-<<<<<<< Updated upstream
-=======
 
 CreateThread(function()
     while true do
@@ -123,4 +114,3 @@ CreateThread(function()
         end
     end
 end)
->>>>>>> Stashed changes
